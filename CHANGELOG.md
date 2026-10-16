@@ -5,6 +5,9 @@ claim below is backed by tests recorded in `docs/STATUS.md` at the time.
 
 ## Unreleased (main branch)
 
+### Security packaging
+- Public Windows binaries are built with Go -trimpath so developer checkout and module-cache paths are not embedded in release executables.
+
 ### Added
 - README parsing now covers indented blocks, blockquote fences and setext headings while preserving source line spans.
 - Verify UI and exported proof HTML provide phase filters for setup, launch, behavior and system timeline entries without executing report data.

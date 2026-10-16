@@ -59,7 +59,7 @@ $ldflags = "-X github.com/repoproof/repoproof/internal/version.ModuleVersion=$Ve
 # VCS stamping is optional metadata. Disable it so a checkout copied between
 # Windows users (or marked as a Git safe-directory by another account) still
 # produces a reproducible binary instead of failing before compilation.
-go build -buildvcs=false -ldflags $ldflags -o $exe ./cmd/repoproof
+go build -trimpath -buildvcs=false -ldflags $ldflags -o $exe ./cmd/repoproof
 if ($LASTEXITCODE -ne 0) { throw "go build failed" }
 Write-Host "== checksum =="
 $hash = (Get-FileHash $exe -Algorithm SHA256).Hash.ToLower()
@@ -79,7 +79,15 @@ if (-not $wails) {
 } else {
   $deskdir = Join-Path $root "desktop"
   Push-Location $deskdir
+  # Keep developer checkout and module-cache paths out of the public binary.
+  $oldGoFlags = $env:GOFLAGS
+  if ([string]::IsNullOrWhiteSpace($oldGoFlags)) {
+    $env:GOFLAGS = "-trimpath"
+  } elseif ($oldGoFlags -notmatch '(^|\s)-trimpath(\s|$)') {
+    $env:GOFLAGS = "$oldGoFlags -trimpath"
+  }
   & $wails build
+  if ($null -eq $oldGoFlags) { Remove-Item Env:GOFLAGS -ErrorAction SilentlyContinue } else { $env:GOFLAGS = $oldGoFlags }
   if ($LASTEXITCODE -ne 0) { throw "wails build failed" }
   Pop-Location
   $dexe = Join-Path $deskdir "build\bin\repoproof-desktop.exe"
