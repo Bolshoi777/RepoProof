@@ -14,6 +14,20 @@ Set-Location $root
 $out = Join-Path $root "dist"
 New-Item -ItemType Directory -Force $out | Out-Null
 
+function Assert-PublicBinaryPaths([string]$Path) {
+  # Read as ASCII because Go/PE path strings are UTF-8/ASCII-compatible. The
+  # check is intentionally narrow: it blocks this checkout and the current
+  # user's profile without treating generic redaction examples as leaks.
+  $bytes = [IO.File]::ReadAllBytes($Path)
+  $text = [Text.Encoding]::ASCII.GetString($bytes)
+  foreach ($needle in @($env:USERPROFILE, $root)) {
+    if (-not [string]::IsNullOrWhiteSpace($needle) -and
+        $text.IndexOf($needle, [StringComparison]::OrdinalIgnoreCase) -ge 0) {
+      throw "public binary contains local path: $needle"
+    }
+  }
+}
+
 if ($SkipValidation) {
   Write-Warning "development snapshot only: validation was skipped; do not use this mode for a public release"
 } else {
@@ -61,6 +75,7 @@ $ldflags = "-X github.com/repoproof/repoproof/internal/version.ModuleVersion=$Ve
 # produces a reproducible binary instead of failing before compilation.
 go build -trimpath -buildvcs=false -ldflags $ldflags -o $exe ./cmd/repoproof
 if ($LASTEXITCODE -ne 0) { throw "go build failed" }
+Assert-PublicBinaryPaths $exe
 Write-Host "== checksum =="
 $hash = (Get-FileHash $exe -Algorithm SHA256).Hash.ToLower()
 "$hash  repoproof-$Version-windows-amd64.exe" | Set-Content (Join-Path $out "repoproof-$Version-windows-amd64.exe.sha256")
@@ -91,6 +106,7 @@ if (-not $wails) {
   if ($LASTEXITCODE -ne 0) { throw "wails build failed" }
   Pop-Location
   $dexe = Join-Path $deskdir "build\bin\repoproof-desktop.exe"
+  Assert-PublicBinaryPaths $dexe
   $dhash = (Get-FileHash $dexe -Algorithm SHA256).Hash.ToLower()
   "$dhash  repoproof-desktop-$Version-windows-amd64.exe" | Set-Content (Join-Path $out "repoproof-desktop-$Version-windows-amd64.exe.sha256")
   Copy-Item $dexe (Join-Path $out "repoproof-desktop-$Version-windows-amd64.exe")

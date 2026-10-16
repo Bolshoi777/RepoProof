@@ -1,4 +1,4 @@
-# RepoProof 0.1.0-dev39
+# RepoProof 0.1.0-dev40
 
 Windows inspect-only development snapshot.
 
@@ -15,8 +15,8 @@ Execution remains fail-closed. `Verify` and `Auto-check` stay disabled until an 
 
 ## Assets
 
-- `repoproof-0.1.0-dev39-windows-amd64.zip` — CLI portable package.
-- `repoproof-desktop-0.1.0-dev39-windows-amd64.zip` — Windows GUI portable package.
+- `repoproof-0.1.0-dev40-windows-amd64.zip` — CLI portable package.
+- `repoproof-desktop-0.1.0-dev40-windows-amd64.zip` — Windows GUI portable package.
 - `.sha256` sidecars and SPDX SBOM are included in the release assets.
 
-The source tree intentionally excludes local agent instructions, private development evidence, temporary logs, and generated build directories.
+The release build also asserts that current user and checkout paths are absent from both EXEs.`r`n`r`nThe source tree intentionally excludes local agent instructions, private development evidence, temporary logs, and generated build directories.
