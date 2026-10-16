@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio (local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:1234/v1"
+      },
+      "models": {
+        "REPLACE_WITH_YOUR_LM_STUDIO_MODEL_ID": {
+          "name": "My local model (replace model ID)"
+        }
+      }
+    }
+  }
+}

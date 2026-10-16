@@ -1,0 +1,29 @@
+# RepoProof proof contract v1 (strict schema, see internal/contract).
+# Migrated 2026-10-09 from the loose proposal to the implemented schema:
+# steps carry run XOR from_readme, oracle assertions are mandatory,
+# verify probes loopback only.
+version: 1
+project:
+  kind: http
+  runtime: node
+execution:
+  max_wall_seconds: 600
+  max_output_bytes: 20971520
+  install_network: restricted
+  verify_network: guest-only
+steps:
+  - id: install
+    phase: install
+    from_readme: true
+  - id: launch
+    phase: launch
+    from_readme: true
+proof:
+  - id: health-status
+    type: http_status
+    target: http://127.0.0.1:8080/health
+    expected: 200
+  - id: health-body
+    type: http_body_contains
+    target: http://127.0.0.1:8080/health
+    expected: ok

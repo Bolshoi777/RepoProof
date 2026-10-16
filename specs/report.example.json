@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "run_id": "example-run-0001",
+  "status": "BLOCKED_SECURITY",
+  "snapshot": {
+    "source": "https://github.com/example/example-repo",
+    "commit": "0123456789abcdef0123456789abcdef01234567",
+    "source_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "environment": {
+    "worker_kind": "example-isolated-worker",
+    "image_digest": "not-provisioned",
+    "attested": false,
+    "network_mode": "guest-only",
+    "policy_digest": "example-policy-digest"
+  },
+  "levels": {
+    "install": "NOT_RUN",
+    "launch": "NOT_RUN",
+    "behavior": "NOT_RUN"
+  },
+  "checks": [],
+  "limitations": [
+    "Sample report only; no repository code executed",
+    "Worker not provisioned, execute blocked"
+  ],
+  "evidence": []
+}

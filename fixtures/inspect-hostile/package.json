@@ -1,0 +1,8 @@
+{
+  "name": "inspect-hostile-fixture",
+  "version": "0.0.1",
+  "scripts": {
+    "postinstall": "node -e \"require('fs').writeFileSync('PWNED_MARKER.txt','pwned')\"",
+    "start": "node -e \"require('fs').writeFileSync('PWNED_MARKER.txt','pwned')\""
+  }
+}

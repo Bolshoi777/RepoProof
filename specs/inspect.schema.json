@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/repoproof/inspect.schema.json",
+  "title": "RepoProof inspect report v1",
+  "description": "Read-only inspection output. No execution performed, no verdict claimed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "source",
+    "commit",
+    "source_fingerprint",
+    "readme",
+    "indicators",
+    "stack",
+    "support",
+    "file_count",
+    "files",
+    "readme_steps",
+    "limitations"
+  ],
+  "properties": {
+    "version": {
+      "const": "1"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "commit": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{40}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source_fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{64}$"
+    },
+    "readme": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "indicators": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "stack": {
+      "enum": [
+        "node",
+        "python",
+        "rust",
+        "go",
+        "java",
+        "ruby",
+        "php",
+        "dotnet",
+        "cpp",
+        "multiple",
+        "unknown"
+      ]
+    },
+    "support": {
+      "enum": [
+        "supported",
+        "unsupported",
+        "undetermined"
+      ]
+    },
+    "file_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fileEntry"
+      }
+    },
+    "readme_steps": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/$defs/readmeStep"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "fileEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "kind",
+        "size"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "file",
+            "symlink"
+          ]
+        },
+        "size": {
+          "type": "integer"
+        },
+        "sha256": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "readmeStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source_file",
+        "line_start",
+        "line_end",
+        "fence_start",
+        "fence_end",
+        "language",
+        "heading",
+        "phase",
+        "command",
+        "unclosed"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source_file": {
+          "type": "string"
+        },
+        "line_start": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "line_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fence_start": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fence_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "language": {
+          "type": "string"
+        },
+        "heading": {
+          "type": "string"
+        },
+        "phase": {
+          "type": "string"
+        },
+        "command": {
+          "type": "string"
+        },
+        "unclosed": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

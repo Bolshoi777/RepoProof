@@ -1,0 +1,7 @@
+DO NOT INSTALL. Hostile fixture for no-exec guard tests.
+
+This package.json contains a postinstall hook that WOULD create
+PWNED_MARKER.txt if anything ever executed it. RepoProof `inspect`
+must only read files and never run hooks, scripts, or binaries.
+If PWNED_MARKER.txt ever appears next to this file, the no-exec
+invariant is broken.

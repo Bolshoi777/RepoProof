@@ -1,0 +1,16 @@
+# Build/runtime (future RepoProof source)
+*.exe
+*.msi
+*.log
+*.tmp
+node_modules/
+dist/
+build/bin/
+coverage/
+*.sqlite
+*.db
+.env
+.env.*
+!.env.example
+reports/private/
+__pycache__/

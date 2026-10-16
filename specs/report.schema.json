@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/repoproof/report.schema.json",
+  "title": "RepoProof proof report v1 (proposed)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "status",
+    "snapshot",
+    "environment",
+    "levels",
+    "checks",
+    "limitations",
+    "evidence"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "VERIFIED",
+        "BEHAVIOR_FAIL",
+        "LAUNCH_FAIL",
+        "INSTALL_FAIL",
+        "DOCS_FAIL",
+        "PARTIAL",
+        "INCONCLUSIVE",
+        "UNSUPPORTED",
+        "BLOCKED_SECURITY",
+        "BLOCKED_ENVIRONMENT",
+        "ERROR_INTERNAL",
+        "CANCELLED"
+      ]
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "commit",
+        "source_fingerprint"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commit": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{40}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_fingerprint": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{64}$"
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "worker_kind",
+        "image_digest",
+        "attested",
+        "network_mode",
+        "policy_digest"
+      ],
+      "properties": {
+        "worker_kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "image_digest": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attested": {
+          "type": "boolean"
+        },
+        "network_mode": {
+          "enum": [
+            "guest-only",
+            "restricted-install",
+            "disabled",
+            "unknown"
+          ]
+        },
+        "policy_digest": {
+          "type": "string",
+          "minLength": 1
+        },
+        "app_version": {
+          "type": "string"
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "cpu_cores": {"type": "integer"},
+            "memory_mb": {"type": "integer"},
+            "disk_mb": {"type": "integer"},
+            "wall_seconds": {"type": "integer"},
+            "max_output_bytes": {"type": "integer"}
+          }
+        }
+      }
+    },
+    "levels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "install",
+        "launch",
+        "behavior"
+      ],
+      "properties": {
+        "install": {
+          "$ref": "#/$defs/level"
+        },
+        "launch": {
+          "$ref": "#/$defs/level"
+        },
+        "behavior": {
+          "$ref": "#/$defs/level"
+        }
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "type",
+          "expected",
+          "observed",
+          "result",
+          "evidence_ref"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "expected": {
+            "type": "string"
+          },
+          "observed": {
+            "type": "string"
+          },
+          "result": {
+            "$ref": "#/$defs/level"
+          },
+          "evidence_ref": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "phase",
+          "command",
+          "exit_code"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "command": {
+            "type": "string"
+          },
+          "exit_code": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ref",
+          "sha256",
+          "sanitized"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{64}$"
+          },
+          "sanitized": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "level": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "NOT_RUN",
+        "UNKNOWN"
+      ]
+    }
+  }
+}

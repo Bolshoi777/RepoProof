@@ -1,0 +1,28 @@
+name: repoproof-self-check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  inspect-self:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+          cache: false
+      - name: Check product mode
+        run: go run ./cmd/repoproof doctor
+      - name: Inspect a clean checkout
+        shell: pwsh
+        run: |
+          $json = Join-Path $env:RUNNER_TEMP "repoproof-self-inspect.json"
+          $html = Join-Path $env:RUNNER_TEMP "repoproof-self-inspect.html"
+          go run ./cmd/repoproof inspect . --json $json --html $html
+          if ($LASTEXITCODE -ne 0) { throw "self inspect failed: $LASTEXITCODE" }
+          if (-not (Test-Path -LiteralPath $json)) { throw "inspect JSON missing" }
+          if (-not (Test-Path -LiteralPath $html)) { throw "inspect HTML missing" }
+      - name: Check acceptance matrix integrity
+        run: go test ./internal/acceptance -count=1

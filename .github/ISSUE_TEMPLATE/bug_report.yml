@@ -1,0 +1,30 @@
+name: Bug report
+description: Report a reproducible RepoProof problem
+title: "[bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please remove repository secrets and personal paths from logs before posting.
+  - type: input
+    id: version
+    attributes:
+      label: RepoProof version
+      placeholder: 0.1.0-dev25
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Include the command, expected result, actual result and status code.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Windows version, architecture and whether the native worker badge was ready.
+    validations:
+      required: true
