@@ -1,7 +1,8 @@
 # Changelog
 
-All notable changes, newest first. Entries mirror the git history; every
-claim below is backed by tests recorded in `docs/STATUS.md` at the time.
+All notable changes, newest first. For the current release status and known
+limitations, see the [README](README.md#current-release-status) and
+[user guide](docs/USER_GUIDE_EN.md#hard-limitations-not-bugs).
 
 ## Unreleased (main branch)
 
