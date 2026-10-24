@@ -8,7 +8,14 @@ Windows 10 compatibility remains unverified.
 
 1. Unzip `repoproof-*-windows-amd64.zip` (CLI) anywhere.
 2. Unzip `repoproof-desktop-*-windows-amd64.zip` (GUI) anywhere.
-3. Verify checksums against the `.sha256` files.
+3. Verify checksums against the `.sha256` files. For example, compare the output of:
+
+   ```powershell
+   Get-FileHash .\repoproof-desktop-0.1.0-dev39-windows-amd64.zip -Algorithm SHA256
+   Get-Content .\repoproof-desktop-0.1.0-dev39-windows-amd64.zip.sha256
+   ```
+
+   The 64-character hash and filename must match before you extract the archive.
 4. An installer is optional; no admin rights or background services are required.
 
 The ZIP also contains `install-portable.ps1`. From PowerShell, run
