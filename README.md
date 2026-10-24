@@ -19,7 +19,7 @@ Inspection is read-only. Repository code, README commands, package lifecycle hoo
 
 ## Current release status
 
-The current Windows package is an **inspect-only development snapshot** (`0.1.0-dev40`). It is useful for safely reviewing public repositories. `Verify` and `Auto-check` remain disabled until the independent native-worker and security-lab gates are complete. The project does not claim that a repository is safe or universally working.
+The current Windows package is an **inspect-only development snapshot** (`0.1.0-dev39`). It is useful for safely reviewing public repositories. `Verify` and `Auto-check` remain disabled until the independent native-worker and security-lab gates are complete. The project does not claim that a repository is safe or universally working.
 
 ## Quick start on Windows
 
@@ -29,7 +29,7 @@ The current Windows package is an **inspect-only development snapshot** (`0.1.0-
 
    ```powershell
    powershell -NoProfile -ExecutionPolicy Bypass -File .\install-portable.ps1 `
-     -PackagePath .\repoproof-desktop-0.1.0-dev40-windows-amd64.zip
+     -PackagePath .\repoproof-desktop-0.1.0-dev39-windows-amd64.zip
    ```
 
 4. Paste a public HTTPS GitHub URL into **Inspect**. Review the pinned commit and candidate commands. The GUI shows elapsed time while a remote snapshot is prepared and provides **Cancel inspect**.
@@ -59,7 +59,7 @@ Read the [user guide](docs/USER_GUIDE_EN.md), [security model](docs/03_SANDBOX_S
 ```powershell
 go vet ./...
 go test ./...
-powershell -ExecutionPolicy Bypass -File scripts/build-release.ps1 -Version 0.1.0-dev40
+powershell -ExecutionPolicy Bypass -File scripts/build-release.ps1 -Version 0.1.0-dev39
 ```
 
 The normal release script runs validation, creates an SPDX SBOM, builds the CLI and Wails Desktop packages, and writes SHA-256 sidecars. Public release still requires independent attestation, security-lab, clean-machine, license, signing, E2E, and provenance evidence.
